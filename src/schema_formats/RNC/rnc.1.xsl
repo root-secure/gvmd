@@ -30,7 +30,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
 <!-- Greenbone Management Protocol (GMP) RNC generator. -->
 
   <xsl:variable name="rnc-comments">1</xsl:variable>
-  <xsl:include href="rnc.xsl"/>
+  <xsl:include href="rnc.2.xsl"/>
 
   <!-- Helpers. -->
 
