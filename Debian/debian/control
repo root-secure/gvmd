@@ -1,0 +1,16 @@
+Source: gvmd
+Maintainer: arcticwolf
+Section: net
+Priority: optional
+Standards-Version: 4.1.5
+Build-Depends: debhelper (>= 11)
+
+Package: gvmd
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Greenbone Vulnerability Manager
+ The Greenbone Vulnerability Manager is the central management service between
+ security scanners and the user clients.
+ .
+ It manages the storage of any vulnerability management configurations and of
+ the scan results.
