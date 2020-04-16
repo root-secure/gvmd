@@ -88,12 +88,12 @@ else (NOT XSLTPROC_EXECUTABLE)
 
   add_custom_command (OUTPUT gmp.rnc
     COMMAND sh
-    ARGS -c \"cd ${CMAKE_SOURCE_DIR}/src/schema_formats/RNC && ${XSLTPROC_EXECUTABLE} ./RNC.xsl ${CMAKE_BINARY_DIR}/src/schema_formats/XML/GMP.xml > ${CMAKE_BINARY_DIR}/doc/gmp.rnc\;\"
+    ARGS -c \"cd ${CMAKE_SOURCE_DIR}/src/schema_formats/RNC && ${XSLTPROC_EXECUTABLE} ./rnc.1.xsl ${CMAKE_BINARY_DIR}/src/schema_formats/XML/GMP.xml > ${CMAKE_BINARY_DIR}/doc/gmp.rnc\;\"
     DEPENDS
     ${CMAKE_BINARY_DIR}/src/schema_formats/XML/GMP.xml
     ${CMAKE_SOURCE_DIR}/src/schema_formats/RNC/generate
-    ${CMAKE_SOURCE_DIR}/src/schema_formats/RNC/RNC.xsl
-    ${CMAKE_SOURCE_DIR}/src/schema_formats/RNC/rnc.xsl)
+    ${CMAKE_SOURCE_DIR}/src/schema_formats/RNC/rnc.1.xsl
+    ${CMAKE_SOURCE_DIR}/src/schema_formats/RNC/rnc.2.xsl)
 
   add_custom_command (OUTPUT gmp.html
     COMMAND sh
@@ -102,7 +102,7 @@ else (NOT XSLTPROC_EXECUTABLE)
     ${CMAKE_BINARY_DIR}/src/schema_formats/XML/GMP.xml
     ${CMAKE_SOURCE_DIR}/src/schema_formats/HTML/generate
     ${CMAKE_SOURCE_DIR}/src/schema_formats/HTML/HTML.xsl
-    ${CMAKE_SOURCE_DIR}/src/schema_formats/HTML/rnc.xsl)
+    ${CMAKE_SOURCE_DIR}/src/schema_formats/HTML/rnc.2.xsl)
 endif (NOT XSLTPROC_EXECUTABLE)
 
 if (XMLTOMAN_EXECUTABLE)
