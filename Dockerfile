@@ -61,7 +61,7 @@ RUN set -x && \
   # create original archive
   cd ${DEB_BUILD_DIR} && \
   tar -czvf gvmd_8.0.1.orig.tar.gz gvmd-8.0.1
-COPY Debian /tmp/gvmd/gvmd-8.0.1
+COPY Debian ${DEB_BUILD_DIR}/gvmd-8.0.1
 RUN set -x && \
   cd ${DEB_BUILD_DIR}/gvmd-8.0.1 && \
   debuild -us -uc
