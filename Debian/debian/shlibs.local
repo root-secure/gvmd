@@ -1,0 +1,4 @@
+libgvm_base 10 gvm-libs
+libgvm_gmp 10 gvm-libs
+libgvm_osp 10 gvm-libs
+libgvm_util 10 gvm-libs

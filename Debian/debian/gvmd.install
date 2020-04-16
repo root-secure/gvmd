@@ -1,0 +1,4 @@
+usr/bin/* usr/bin/
+usr/etc/* usr/etc/
+usr/sbin/* usr/sbin/
+usr/share/* usr/share/
