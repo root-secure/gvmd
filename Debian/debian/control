@@ -7,15 +7,9 @@ Build-Depends: debhelper (>= 11)
 
 Package: gvmd
 Architecture: any
-Depends: gvm-libs,
-         libassuan0,
-         libc6,
-         libglib2.0-0,
-         libgnutls30,
-         libgpg-error0,
-         libgpgme11,
-         libical3,
-         libsqlite3-0
+Depends: ${misc:Depends},
+         ${shlibs:Depends},
+         gvm-libs
 Description: Greenbone Vulnerability Manager
  The Greenbone Vulnerability Manager is the central management service between
  security scanners and the user clients.
