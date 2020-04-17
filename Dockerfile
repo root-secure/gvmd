@@ -1,9 +1,14 @@
-FROM debian:latest
+FROM ubuntu:latest
 ENV LIB_INSTALL_PREFIX ${LIB_INSTALL_PREFIX:-/usr}
 ENV DEB_BUILD_DIR ${DEB_BUILD_DIR:-/tmp/gvmd}
+# make tzdata installation noninteractive
+ENV DEBIAN_FRONTEND ${DEBIAN_FRONTEND:-noninteractive}
+RUN ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
+# install dependencies
 RUN apt-get update && apt-get install -q -y --fix-missing \
   tar \
   devscripts \
+  debhelper \
   cmake \
   git \
   gcc \
