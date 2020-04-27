@@ -1,0 +1,5 @@
+openvas-manager (8.0.1) UNRELEASED; urgency=medium
+
+  * Initial release. (Closes: #XXXXXX)
+
+ -- root <root@8da57ed37931>  Wed, 22 Apr 2020 15:24:10 +0000
