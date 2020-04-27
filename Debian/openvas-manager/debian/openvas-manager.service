@@ -1,0 +1,17 @@
+[Unit]
+Description=Open Vulnerability Assessment System Manager Daemon
+Documentation=man:gvmd(8) https://www.greenbone.net
+After=openvas-scanner.service
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=forking
+PIDFile=/usr/var/run/gvmd.pid
+ExecStart=/usr/sbin/gvmd
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+# Kill the main process with SIGTERM and after TimeoutStopSec (defaults to
+# 1m30) kill remaining processes with SIGKILL
+KillMode=mixed

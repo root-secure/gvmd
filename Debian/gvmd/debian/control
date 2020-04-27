@@ -9,7 +9,7 @@ Package: gvmd
 Architecture: any
 Depends: ${misc:Depends},
          ${shlibs:Depends},
-         gvm-libs
+         gvm-libs,
 Description: Greenbone Vulnerability Manager
  The Greenbone Vulnerability Manager is the central management service between
  security scanners and the user clients.

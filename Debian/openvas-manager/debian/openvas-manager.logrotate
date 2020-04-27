@@ -1,0 +1,17 @@
+/var/log/gvm/gvmd.log {
+  missingok
+  notifempty
+  create 640 root adm
+  daily
+  rotate 7
+  compress
+  postrotate
+    if [ -s /run/gvmd.pid ]; then kill -1 `cat /run/gvmd.pid`; fi
+    openvaslogs=`ls /var/log/gvm/gvmd.log.*`
+    if [ -n "$openvaslogs" ]; then
+        chown root:adm $openvaslogs
+        chmod 640 $openvaslogs
+    fi
+  endscript
+}
+
