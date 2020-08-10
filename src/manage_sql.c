@@ -16455,7 +16455,7 @@ check_db_settings ()
          " VALUES"
          " ('" SETTING_UUID_ROWS_PER_PAGE "', NULL, 'Rows Per Page',"
          "  'The default number of rows displayed in any listing.',"
-         "  10);");
+         "  100000);");
 
   if (sql_int ("SELECT count(*) FROM settings"
                " WHERE uuid = '" SETTING_UUID_MAX_ROWS_PER_PAGE "'"
@@ -16465,7 +16465,7 @@ check_db_settings ()
          " VALUES"
          " ('" SETTING_UUID_MAX_ROWS_PER_PAGE "', NULL, 'Max Rows Per Page',"
          "  'The default maximum number of rows displayed in any listing.',"
-         "  1000);");
+         "  100000);");
 
   if (sql_int ("SELECT count(*) FROM settings"
                " WHERE uuid = 'f16bb236-a32d-4cd5-a880-e0fcf2599f59'"
