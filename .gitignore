@@ -1,2 +1,5 @@
 build/
 *_amd64.deb
+*.rpm
+
+!**/*rpmbuild/BUILD/
