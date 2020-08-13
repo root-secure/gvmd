@@ -82,17 +82,12 @@ RUN set -x && \
 WORKDIR ${GVMD_RPM_BUILD_DIR}
 COPY RPM/gvmd/rpmbuild .
 RUN set -x && \
-#  tar -czvf ./SOURCES/v8.0.2.tar.gz -C /tmp gvmd && \
   rpmbuild -bb SPECS/gvmd.spec
 WORKDIR ${OPENVAS_MGR_RPM_BUILD_DIR}
 COPY RPM/openvas-manager/openvas-manager.logrotate /etc/logrotate.d/openvas-manager
 COPY RPM/openvas-manager/openvas-manager.service /etc/systemd/system/multi-user.target.wants/openvas-manager.service
 COPY RPM/openvas-manager/rpmbuild .
 RUN set -x && \
-#  mkdir /tmp/openvas-manager && \
-#  cp /etc/logrotate.d/openvas-manager /tmp/openvas-manager/openvas-manager.logrotate && \
-#  cp /etc/systemd/system/multi-user.target.wants/openvas-manager.service /tmp/openvas-manager/ && \
-#  tar -czvf ./SOURCES/openvas-manager-v8.0.2.tar.gz -C /tmp openvas-manager && \
   rpmbuild -bb SPECS/openvas-manager.spec
 WORKDIR ${SQLITE_DEVEL_RPM_BUILD_DIR}
 COPY RPM/sqlite-devel/rpmbuild .
