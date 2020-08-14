@@ -5,6 +5,7 @@ ENV ZLIB_VERSION ${ZLIB_VERSION:-1.2.11}
 ENV LIBGPG_ERROR_VERSION ${LIBGPG_ERROR_VERSION:-1.38}
 ENV LIBASSUAN_VERSION ${LIBASSUAN_VERSION:-2.5.3}
 ENV GPGME_VERSION ${GPGME_VERSION:-1.14.0}
+ENV UTIL_LINUX_VERSION ${UTIL_LINUX_VERSION:-2.36}
 ENV LIB_INSTALL_PREFIX ${LIB_INSTALL_PREFIX:-/}
 ENV GVMD_RPM_BUILD_DIR ${GVMD_RPM_BUILD_DIR:-/root/gvmd/rpmbuild}
 ENV OPENVAS_MGR_RPM_BUILD_DIR ${OPENVAS_MGR_RPM_BUILD_DIR:-/root/openvas-manager/rpmbuild}
@@ -34,7 +35,6 @@ RUN yum update -y && \
     gnutls-devel \
     hiredis-devel \
     libssh-devel \
-    libuuid-devel \
     libical-devel && \
   yum clean all && \
   rm -rf /var/cache/yum/*
@@ -62,12 +62,15 @@ RUN set -x && \
   tar -xzvf sqlite.tar.gz && \
   mkdir build && cd build && \
   ../sqlite/configure --prefix=/ --libdir=/lib64 --includedir=/usr/include && make && make install
+WORKDIR /tmp/util-linux
+RUN wget https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v${UTIL_LINUX_VERSION}/util-linux-${UTIL_LINUX_VERSION}.tar.gz && \
+  tar -xzvf util-linux-${UTIL_LINUX_VERSION}.tar.gz --strip-components=1 && \
+  ./configure --prefix=/ --libdir=/lib64 --includedir=/usr/include && make && make install
 WORKDIR /tmp/gvm-libs
 RUN set -x && \
   git clone https://github.com/root-secure/gvm-libs.git && \
   cd gvm-libs && \
   git fetch && git checkout awn-gvm-libs-10.0 && \
-  sed -i 's/uuid>=2.25.0/uuid>=2.23.0/g' util/CMakeLists.txt && \
   mkdir build && cd build && \
   cmake3 -DCMAKE_INSTALL_PREFIX=${LIB_INSTALL_PREFIX} .. && make && make install
 
