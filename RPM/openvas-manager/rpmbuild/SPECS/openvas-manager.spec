@@ -24,11 +24,11 @@ the scan results.
 mkdir -p %{buildroot}/etc/logrotate.d/
 mkdir -p %{buildroot}/etc/systemd/system/multi-user.target.wants/
 cp /etc/logrotate.d/openvas-manager %{buildroot}/etc/logrotate.d/
-cp /etc/systemd/system/multi-user.target.wants/openvas-manager.service %{buildroot}/etc/systemd/system/multi-user.target.wants/
+cp /etc/systemd/system/multi-user.target.wants/openvas-manager.service %{buildroot}/usr/lib/systemd/system/openvas-manager.service
 
 %files
 /etc/logrotate.d/openvas-manager
-/etc/systemd/system/multi-user.target.wants/openvas-manager.service
+/usr/lib/systemd/system/openvas-manager.service
 
 %changelog
 * Wed Aug 5 2020 aschryver Arctic Wolf Network
