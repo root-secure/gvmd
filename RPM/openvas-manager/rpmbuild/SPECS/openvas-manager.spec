@@ -22,7 +22,7 @@ the scan results.
 
 %install
 mkdir -p %{buildroot}/etc/logrotate.d/
-mkdir -p %{buildroot}/etc/systemd/system/multi-user.target.wants/
+mkdir -p %{buildroot}/usr/lib/systemd/system/
 cp /etc/logrotate.d/openvas-manager %{buildroot}/etc/logrotate.d/
 cp /etc/systemd/system/multi-user.target.wants/openvas-manager.service %{buildroot}/usr/lib/systemd/system/openvas-manager.service
 
