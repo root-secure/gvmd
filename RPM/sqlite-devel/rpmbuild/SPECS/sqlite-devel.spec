@@ -28,8 +28,8 @@ cp /usr/include/sqlite3.h %{buildroot}/opt/awn/usr/include/
 cp /usr/include/sqlite3ext.h %{buildroot}/opt/awn/usr/include/
 cp /lib64/libsqlite3.a %{buildroot}/opt/awn/lib64/
 cp /lib64/libsqlite3.la %{buildroot}/opt/awn/lib64/
-ln -s /lib64/libsqlite3.so.0.8.6 %{buildroot}/opt/awn/lib64/libsqlite3.so
-ln -s /lib64/libsqlite3.so.0.8.6 %{buildroot}/opt/awn/lib64/libsqlite3.so.0
+ln -s /opt/awn/lib64/libsqlite3.so.0.8.6 %{buildroot}/opt/awn/lib64/libsqlite3.so
+ln -s /opt/awn/lib64/libsqlite3.so.0.8.6 %{buildroot}/opt/awn/lib64/libsqlite3.so.0
 cp /lib64/libsqlite3.so.0.8.6 %{buildroot}/opt/awn/lib64/
 cp /lib64/pkgconfig/sqlite3.pc %{buildroot}/opt/awn/lib64/pkgconfig/
 cp /ld.so.conf %{buildroot}/etc/ld.so.conf.d/sqlite.conf
