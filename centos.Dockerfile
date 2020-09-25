@@ -93,6 +93,7 @@ COPY RPM/openvas-manager/rpmbuild .
 RUN set -x && \
   rpmbuild -bb SPECS/openvas-manager.spec
 WORKDIR ${SQLITE_DEVEL_RPM_BUILD_DIR}
+COPY RPM/sqlite-devel/ld.so.conf /
 COPY RPM/sqlite-devel/rpmbuild .
 RUN set -x && \
   rpmbuild -bb SPECS/sqlite-devel.spec
