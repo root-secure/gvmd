@@ -15483,16 +15483,22 @@ static void
 update_nvti_cache ()
 {
   iterator_t nvts;
+  int count = 0;
 
+  g_info("Updating In-Memory NVT Info Cache");
   nvtis_free (nvti_cache);
+  g_info("In-Memory NVT Info Cache: Cleared");
+
 
   nvti_cache = nvtis_new ();
 
   init_iterator (&nvts,
                  "SELECT oid, name, family, cvss_base, cve, bid, xref, tag"
                  " FROM nvts;");
+  g_info("In-Memory NVT Info Cache: Iterating");
   while (next (&nvts))
     {
+      count += 1;
       nvti_t *nvti = nvti_new ();
       nvti_set_oid (nvti, iterator_string (&nvts, 0));
       nvti_set_name (nvti, iterator_string (&nvts, 1));
@@ -15504,6 +15510,7 @@ update_nvti_cache ()
       nvti_set_tag (nvti, iterator_string (&nvts, 7));
       nvtis_add (nvti_cache, nvti);
     }
+  g_info("In-Memory NVT Info Cache: Updated. Added %d entries", count);
   cleanup_iterator (&nvts);
 }
 
@@ -15518,8 +15525,10 @@ manage_update_nvti_cache ()
   int ret;
 
   ret = sql_begin_immediate_giveup ();
-  if (ret)
+  if (ret) {
+    g_info("Manage Update to In-Memory NVT Info Cache failed (%d) as database is locked or busy.", ret);
     return ret;
+  }
   if (sql_int ("SELECT value FROM %s.meta"
                " WHERE name = 'update_nvti_cache';",
                sql_schema ()))
@@ -15527,6 +15536,8 @@ manage_update_nvti_cache ()
       update_nvti_cache ();
       sql ("UPDATE %s.meta SET value = 0 WHERE name = 'update_nvti_cache';",
            sql_schema ());
+    } else {
+      g_info("Manage Update to In-Memory NVT Info Cache skipped as database value is 0.");
     }
   sql_commit ();
   return 0;

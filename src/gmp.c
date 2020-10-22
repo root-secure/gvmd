@@ -10592,9 +10592,9 @@ results_xml_append_nvt (iterator_t *results, GString *buffer, int cert_loaded)
                                     oid,
                                     result_iterator_nvt_name (results) ?: oid,
                                     result_iterator_nvt_family (results) ?: "",
-                                    cvss_base ?: "",
-                                    result_iterator_nvt_cve (results) ?: "",
-                                    result_iterator_nvt_bid (results) ?: "",
+                                    cvss_base ?: "0.1",
+                                    result_iterator_nvt_cve (results) ?: "AWN.NONE",
+                                    result_iterator_nvt_bid (results) ?: "AWN.NONE",
                                     result_iterator_nvt_xref (results) ?: "",
                                     result_iterator_nvt_tag (results) ?: "");
         }
