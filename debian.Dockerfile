@@ -4,6 +4,7 @@ ENV GVMD_DEB_BUILD_DIR ${GVMD_DEB_BUILD_DIR:-/tmp/gvmd}
 ENV OPENVAS_MGR_DEB_BUILD_DIR ${OPENVAS_MGR_DEB_BUILD_DIR:-/tmp/openvas-manager}
 # make tzdata installation noninteractive
 ENV DEBIAN_FRONTEND ${DEBIAN_FRONTEND:-noninteractive}
+ENV GVM_LIBS_BRANCH ${GVM_LIBS_BRANCH:-sean/43405}
 RUN ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
 # install dependencies
 RUN apt-get update && apt-get install -q -y --fix-missing \
@@ -30,7 +31,7 @@ WORKDIR /tmp/build/gvm-libs
 RUN set -x && \
   git clone https://github.com/root-secure/gvm-libs.git && \
   cd gvm-libs && \
-  git fetch && git checkout awn-gvm-libs-10.0 && \
+  git fetch && git checkout ${GVM_LIBS_BRANCH} && \
   mkdir build && cd build && \
   cmake -DCMAKE_INSTALL_PREFIX=${LIB_INSTALL_PREFIX} .. && make && make install
 WORKDIR /tmp/build/gvmd

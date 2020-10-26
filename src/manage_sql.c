@@ -15483,6 +15483,7 @@ static void
 update_nvti_cache ()
 {
   iterator_t nvts;
+  unsigned int cache_size;
   int count = 0;
 
   g_info("Updating In-Memory NVT Info Cache");
@@ -15510,7 +15511,8 @@ update_nvti_cache ()
       nvti_set_tag (nvti, iterator_string (&nvts, 7));
       nvtis_add (nvti_cache, nvti);
     }
-  g_info("In-Memory NVT Info Cache: Updated. Added %d entries", count);
+  cache_size = nvtis_count (nvti_cache);
+  g_info("In-Memory NVT Info Cache: Updated. Added %d entries. Current size: %u.", count, cache_size);
   cleanup_iterator (&nvts);
 }
 
@@ -15524,9 +15526,11 @@ manage_update_nvti_cache ()
 {
   int ret;
 
+  unsigned int cache_size;
+  cache_size = nvtis_count (nvti_cache);
   ret = sql_begin_immediate_giveup ();
   if (ret) {
-    g_info("Manage Update to In-Memory NVT Info Cache failed (%d) as database is locked or busy.", ret);
+    g_info("Manage Update to In-Memory NVT Info Cache failed (%d) as database is locked or busy. Current size: %u.", ret, cache_size);
     return ret;
   }
   if (sql_int ("SELECT value FROM %s.meta"
@@ -15537,7 +15541,7 @@ manage_update_nvti_cache ()
       sql ("UPDATE %s.meta SET value = 0 WHERE name = 'update_nvti_cache';",
            sql_schema ());
     } else {
-      g_info("Manage Update to In-Memory NVT Info Cache skipped as database value is 0.");
+      g_info("Manage Update to In-Memory NVT Info Cache skipped as database value is 0. Current size: %u.", cache_size);
     }
   sql_commit ();
   return 0;
