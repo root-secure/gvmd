@@ -10,6 +10,8 @@ Architecture: any
 Depends: ${misc:Depends},
          ${shlibs:Depends},
          gvm-libs,
+         postgresql-10,
+         postgresql-contrib,
 Description: Greenbone Vulnerability Manager
  The Greenbone Vulnerability Manager is the central management service between
  security scanners and the user clients.
