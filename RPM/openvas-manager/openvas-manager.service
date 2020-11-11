@@ -15,7 +15,8 @@ Restart=always
 RestartSec=1
 User=root
 Group=root
-TimeoutSec=1200
+TimeoutStartSec=600
+TimeoutStopSec=60
 
 [Install]
 WantedBy=multi-user.target
