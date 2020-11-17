@@ -23,6 +23,7 @@ the scan results.
 %install
 mkdir -p %{buildroot}/var/lib/gvm/gvmd
 mkdir -p %{buildroot}/bin/
+mkdir -p %{buildroot}/usr/lib/
 mkdir -p %{buildroot}/etc/gvm/
 mkdir -p %{buildroot}/sbin/
 mkdir -p %{buildroot}/share/doc/gvm/
@@ -31,22 +32,22 @@ mkdir -p %{buildroot}/share/man/
 mkdir -p %{buildroot}/share/man/man1/
 mkdir -p %{buildroot}/share/man/man8/
 cp /bin/gvm-manage-certs %{buildroot}/bin/
+cp /usr/lib/libgvm-pg-server* %{buildroot}/usr/lib/
 cp /etc/gvm/*.conf %{buildroot}/etc/gvm/
-cp /sbin/database-statistics-sqlite %{buildroot}/sbin/
 cp /sbin/greenbone-* %{buildroot}/sbin/
-cp /sbin/gvm-* %{buildroot}/sbin/
-cp /sbin/gvmd-sqlite %{buildroot}/sbin/
-ln -s /sbin/gvmd-sqlite %{buildroot}/sbin/gvmd
+cp /sbin/gvm[-d]* %{buildroot}/sbin/
 cp /share/doc/gvm/* %{buildroot}/share/doc/gvm/
 cp -r /share/gvm/* %{buildroot}/share/gvm/
 cp /share/man/man1/gvm-manage-certs.1 %{buildroot}/share/man/man1/
-cp /share/man/man8/database-statistics-sqlite.8 %{buildroot}/share/man/man8/
 cp /share/man/man8/greenbone-*.8 %{buildroot}/share/man/man8/
 cp /share/man/man8/gvm-*.8 %{buildroot}/share/man/man8/
 cp /share/man/man8/gvmd.8 %{buildroot}/share/man/man8/
 
 %files
 /var/lib/gvm/gvmd
+/usr/lib/libgvm-pg-server.so
+/usr/lib/libgvm-pg-server.so.8
+/usr/lib/libgvm-pg-server.so.8.0.2~git
 /etc/gvm/gvmd_log.conf
 /etc/gvm/pwpolicy.conf
 /share/gvm/gvmd/report_formats/5057e5cc-b825-11e4-9d0e-28d24461215b/report_format.xml
@@ -132,16 +133,14 @@ cp /share/man/man8/gvmd.8 %{buildroot}/share/man/man8/
 /share/gvm/gvm-lsc-deb-creator.sh
 /share/gvm/gvm-lsc-rpm-creator.sh
 /sbin/gvm-migrate-to-postgres
-/sbin/database-statistics-sqlite
 /bin/gvm-manage-certs
 /share/man/man1/gvm-manage-certs.1
 /share/doc/gvm/example-gvm-manage-certs.conf
-/sbin/gvmd-sqlite
 /sbin/gvmd
+/sbin/gvmd-pg
 /share/man/man8/gvmd.8
 /share/man/man8/greenbone-certdata-sync.8
 /share/man/man8/greenbone-scapdata-sync.8
-/share/man/man8/database-statistics-sqlite.8
 /share/man/man8/gvm-migrate-to-postgres.8
 /share/man/man8/gvm-portnames-update.8
 

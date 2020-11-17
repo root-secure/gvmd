@@ -9,7 +9,7 @@ ENV UTIL_LINUX_VERSION ${UTIL_LINUX_VERSION:-2.36}
 ENV LIB_INSTALL_PREFIX ${LIB_INSTALL_PREFIX:-/}
 ENV GVMD_RPM_BUILD_DIR ${GVMD_RPM_BUILD_DIR:-/root/gvmd/rpmbuild}
 ENV OPENVAS_MGR_RPM_BUILD_DIR ${OPENVAS_MGR_RPM_BUILD_DIR:-/root/openvas-manager/rpmbuild}
-ENV SQLITE_DEVEL_RPM_BUILD_DIR ${SQLITE_DEVEL_RPM_BUILD_DIR:-/root/sqlite/rpmbuild}
+ENV GVM_LIBS_BRANCH ${GVM_LIBS_BRANCH:-sean/43405}
 
 # install repositories
 RUN yum -y install epel-release && \
@@ -35,9 +35,16 @@ RUN yum update -y && \
     gnutls-devel \
     hiredis-devel \
     libssh-devel \
-    libical-devel && \
+    libical-devel \
+    postgresql-devel \
+    postgresql-server \
+    postgresql-contrib \
+    && \
   yum clean all && \
   rm -rf /var/cache/yum/*
+
+RUN ln -s /usr/include /usr/include/postgresql
+RUN rm -f /usr/bin/xsltproc
 
 # install missing packages from source
 WORKDIR /tmp/zlib
@@ -56,12 +63,6 @@ WORKDIR /tmp/gpgme
 RUN wget https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-${GPGME_VERSION}.tar.bz2 && \
   tar -jxvf gpgme-${GPGME_VERSION}.tar.bz2 --strip-components=1 && \
   ./configure CC=c99 --prefix=/ --libdir=/lib64 --includedir=/usr/include && make && make install
-WORKDIR /tmp/sqlite
-RUN set -x && \
-  wget -O sqlite.tar.gz https://www.sqlite.org/src/tarball/sqlite.tar.gz?v=3.33.0 && \
-  tar -xzvf sqlite.tar.gz && \
-  mkdir build && cd build && \
-  ../sqlite/configure --prefix=/ --libdir=/lib64 --includedir=/usr/include && make && make install
 WORKDIR /tmp/util-linux
 RUN wget https://mirrors.edge.kernel.org/pub/linux/utils/util-linux/v${UTIL_LINUX_VERSION}/util-linux-${UTIL_LINUX_VERSION}.tar.gz && \
   tar -xzvf util-linux-${UTIL_LINUX_VERSION}.tar.gz --strip-components=1 && \
@@ -70,16 +71,16 @@ WORKDIR /tmp/gvm-libs
 RUN set -x && \
   git clone https://github.com/root-secure/gvm-libs.git && \
   cd gvm-libs && \
-  git fetch && git checkout awn-gvm-libs-10.0 && \
+  git fetch && git checkout ${GVM_LIBS_BRANCH} && \
   mkdir build && cd build && \
-  cmake3 -DCMAKE_INSTALL_PREFIX=${LIB_INSTALL_PREFIX} .. && make && make install
+  cmake3 -DBACKEND=POSTGRESQL -DCMAKE_INSTALL_PREFIX=${LIB_INSTALL_PREFIX} .. && make && make install
 
 # build gvmd
 WORKDIR /tmp/gvmd
 COPY . .
 RUN set -x && \
   mkdir build && cd build && \
-  cmake3 -DCMAKE_INSTALL_PREFIX=${LIB_INSTALL_PREFIX} .. && make && make install
+  cmake3 -DBACKEND=POSTGRESQL -DCMAKE_INSTALL_PREFIX=${LIB_INSTALL_PREFIX} .. && make && make install
 
 # build the RPM
 WORKDIR ${GVMD_RPM_BUILD_DIR}
@@ -92,8 +93,3 @@ COPY RPM/openvas-manager/openvas-manager.service /etc/systemd/system/multi-user.
 COPY RPM/openvas-manager/rpmbuild .
 RUN set -x && \
   rpmbuild -bb SPECS/openvas-manager.spec
-WORKDIR ${SQLITE_DEVEL_RPM_BUILD_DIR}
-COPY RPM/sqlite-devel/ld.so.conf /
-COPY RPM/sqlite-devel/rpmbuild .
-RUN set -x && \
-  rpmbuild -bb SPECS/sqlite-devel.spec
