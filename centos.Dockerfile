@@ -44,6 +44,10 @@ RUN yum update -y && \
   rm -rf /var/cache/yum/*
 
 RUN ln -s /usr/include /usr/include/postgresql
+
+# One of the build scripts seemed to use the existence of this file to determine
+# if it should generate all the HTML documentation... which then fails to build.
+# So this removes that problem.
 RUN rm -f /usr/bin/xsltproc
 
 # install missing packages from source

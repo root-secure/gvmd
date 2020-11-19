@@ -15483,8 +15483,8 @@ static void
 update_nvti_cache ()
 {
   iterator_t nvts;
-  unsigned int cache_size;
-  int count = 0;
+  unsigned int cache_size = 0;
+  unsigned int count = 0;
 
   g_info("Updating In-Memory NVT Info Cache");
   nvtis_free (nvti_cache);
@@ -15512,7 +15512,7 @@ update_nvti_cache ()
       nvtis_add (nvti_cache, nvti);
     }
   cache_size = nvtis_count (nvti_cache);
-  g_info("In-Memory NVT Info Cache: Updated. Added %d entries. Current size: %u.", count, cache_size);
+  g_info("In-Memory NVT Info Cache: Updated. Added %u entries. Current size: %u.", count, cache_size);
   cleanup_iterator (&nvts);
 }
 
