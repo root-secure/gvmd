@@ -2,3 +2,4 @@ usr/bin/* usr/bin/
 usr/etc/* usr/etc/
 usr/sbin/* usr/sbin/
 usr/share/* usr/share/
+usr/lib/libgvm*.so.* usr/lib/

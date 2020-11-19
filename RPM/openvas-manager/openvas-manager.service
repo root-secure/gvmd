@@ -8,7 +8,7 @@ WantedBy=multi-user.target
 
 [Service]
 Type=forking
-PIDFile=/usr/var/run/gvmd.pid
+PIDFile=/var/run/gvmd.pid
 ExecStart=/usr/sbin/gvmd
 KillMode=mixed
 Restart=always

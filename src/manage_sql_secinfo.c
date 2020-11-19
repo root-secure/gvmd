@@ -2014,6 +2014,7 @@ update_scap_cpes (int last_scap_update)
                              " FROM scap.cves;");
 
   g_debug ("%s: parsing %s", __FUNCTION__, full_path);
+  g_info ("AWN.%s: parsing %s", __FUNCTION__, full_path);
 
   error = NULL;
   g_file_get_contents (full_path, &xml, &xml_len, &error);
@@ -4296,10 +4297,14 @@ update_scap (int lockfile,
   updated_scap_cpes = 0;
   updated_scap_cves = 0;
 
+  g_info ("AWN.%s: Start of Sync", __FUNCTION__);
+
   if (manage_scap_db_exists ())
     {
-      if (check_scap_db_version ())
+      if (check_scap_db_version ()) {
+        g_info ("AWN.%s: manage_scap_db_exists is true, but check_scap_db_version failed", __FUNCTION__);
         return -1;
+      }
     }
   else
     {
@@ -4351,15 +4356,21 @@ update_scap (int lockfile,
     }
 
   last_feed_update = manage_feed_timestamp ("scap");
-  if (last_feed_update == -1)
+  if (last_feed_update == -1) {
+    g_info ("AWN.%s: Skipping SCAP sync because there is no feed update time: %d", __FUNCTION__, last_feed_update);
     return -1;
+  }
 
-  if (last_scap_update >= last_feed_update)
+  if (last_scap_update >= last_feed_update) {
+    g_info ("AWN.%s: Skipping SCAP sync because (SCAP Update) %d >= %d (Feed Update)", __FUNCTION__, last_scap_update, last_feed_update);
     return -1;
+  }
 
+  g_info ("AWN.%s: Performing SCAP sync", __FUNCTION__);
   g_debug ("%s: sync", __FUNCTION__);
 
   write_sync_start (lockfile);
+  g_info ("AWN.%s: Lockfile acquired", __FUNCTION__);
 
   manage_db_check_mode ("scap");
 
@@ -4373,6 +4384,7 @@ update_scap (int lockfile,
         }
     }
 
+  g_info ("AWN.%s: DB Init", __FUNCTION__);
   if (manage_update_scap_db_init ())
     goto fail;
 
@@ -4382,7 +4394,9 @@ update_scap (int lockfile,
     {
       g_debug ("%s: update cpes", __FUNCTION__);
 
+      g_info ("AWN.%s: Pre CPEs", __FUNCTION__);
       updated_scap_cpes = update_scap_cpes (last_scap_update);
+      g_info ("AWN.%s: Post CPEs", __FUNCTION__);
       if (updated_scap_cpes == -1)
         {
           manage_update_scap_db_cleanup ();
@@ -4394,7 +4408,9 @@ update_scap (int lockfile,
     {
       g_debug ("%s: update cves", __FUNCTION__);
 
+      g_info ("AWN.%s: Pre CVEs", __FUNCTION__);
       updated_scap_cves = update_scap_cves (last_scap_update);
+      g_info ("AWN.%s: Post CVEs", __FUNCTION__);
       if (updated_scap_cves == -1)
         {
           manage_update_scap_db_cleanup ();
@@ -4406,8 +4422,10 @@ update_scap (int lockfile,
     {
       g_debug ("%s: update ovaldefs", __FUNCTION__);
 
+      g_info ("AWN.%s: Pre OvalDefs", __FUNCTION__);
       updated_scap_ovaldefs =
         update_scap_ovaldefs (last_scap_update, 0 /* Feed data. */);
+      g_info ("AWN.%s: Post OvalDefs", __FUNCTION__);
       if (updated_scap_ovaldefs == -1)
         {
           manage_update_scap_db_cleanup ();
@@ -4429,9 +4447,12 @@ update_scap (int lockfile,
         }
     }
 
+  g_info ("AWN.%s: Pre SCAP CVSS", __FUNCTION__);
   update_scap_cvss (
     updated_scap_cves, updated_scap_cpes, updated_scap_ovaldefs);
+  g_info ("AWN.%s: Mid SCAP CVSS-Placeholders", __FUNCTION__);
   update_scap_placeholders (updated_scap_cves);
+  g_info ("AWN.%s: Post SCAP Placeholders", __FUNCTION__);
 
   g_debug ("%s: update timestamp", __FUNCTION__);
 
@@ -4456,6 +4477,7 @@ update_scap (int lockfile,
 fail:
   /* Clear date from lock file. */
 
+  g_info ("AWN.%s: FAIL PATH", __FUNCTION__);
   if (ftruncate (lockfile, 0))
     g_warning (
       "%s: failed to ftruncate lockfile: %s", __FUNCTION__, strerror (errno));
